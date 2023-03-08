@@ -1,0 +1,27 @@
+name: event_ads
+description: Holds an implementation for ad mob integration using the event_bloc package
+version: 0.1.0
+homepage:
+
+environment:
+  sdk: '>=2.19.3 <3.0.0'
+  flutter: ">=1.17.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  event_bloc: ^4.2.0
+  event_db: ^0.1.0
+  # event_db:
+  #   path: ../event_db
+  google_mobile_ads: ^2.3.0
+
+  uuid: ^3.0.7
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+
+flutter:

@@ -70,4 +70,7 @@ class AdMobHandler extends AdHandler {
 
   @override
   bool get supportsAds => supported;
+
+  @override
+  Future<void> initialize() => MobileAds.instance.initialize();
 }

@@ -16,6 +16,7 @@ class RewardResultWithId {
 }
 
 abstract class AdHandler {
+  Future<void> initialize();
   FutureOr<void> showAd();
   FutureOr<RewardResult> showRewardedAd(String id);
   bool get supportsAds;
@@ -27,10 +28,23 @@ class AdRepository extends Repository {
       StreamController<RewardResultWithId>.broadcast();
 
   bool get supportsAds => adHandler.supportsAds;
+  bool attemptedToInitialize = false;
+  final completer = Completer();
 
   AdRepository({required this.adHandler});
   Stream<RewardResultWithId> get showRewardedAdResultStream =>
       _showRewardedAdResultStreamController.stream;
+
+  @override
+  void initialize(BlocEventChannel channel) async {
+    super.initialize(channel);
+    if (attemptedToInitialize) {
+      return;
+    }
+    attemptedToInitialize = true;
+    await adHandler.initialize();
+    completer.complete();
+  }
 
   @override
   List<BlocEventListener> generateListeners(BlocEventChannel channel) => [

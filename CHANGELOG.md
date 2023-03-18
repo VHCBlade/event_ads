@@ -1,3 +1,3 @@
-## 0.0.1
+## 0.1.0
 
-* TODO: Describe initial release.
+* Initial Release - Supports simple events for showing interstitial and rewarded ads.

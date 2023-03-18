@@ -1,7 +1,7 @@
 name: event_ads
 description: Holds an implementation for ad mob integration using the event_bloc package
 version: 0.1.0
-homepage:
+homepage: https://github.com/VHCBlade/event_ads
 
 environment:
   sdk: '>=2.19.3 <3.0.0'

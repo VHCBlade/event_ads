@@ -6,6 +6,8 @@ enum AdEvent<T> {
   showAd<void>(),
   showRewardedAd<String>(),
   showRewardedAdWithCallback<RewardedAdCallback>(),
+
+  loadingAd<void>(),
   ;
 
   BlocEventType<T> get event => BlocEventType.fromObject(this);

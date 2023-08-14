@@ -33,39 +33,40 @@ class AdMobHandler extends AdHandler {
     if (!supported) {
       throw UnimplementedError();
     }
-    InterstitialAd.load(
-        adUnitId: interstitialId,
-        request: adRequest,
-        adLoadCallback: InterstitialAdLoadCallback(
-          onAdLoaded: (InterstitialAd ad) {
-            ad.show();
-          },
-          onAdFailedToLoad: (LoadAdError error) {
-            // Who cares?
-          },
-        ));
+    return InterstitialAd.load(
+      adUnitId: interstitialId,
+      request: adRequest,
+      adLoadCallback: InterstitialAdLoadCallback(
+        onAdLoaded: (InterstitialAd ad) {
+          ad.show();
+        },
+        onAdFailedToLoad: (LoadAdError error) {
+          // Who cares?
+        },
+      ),
+    );
   }
 
   @override
-  FutureOr<RewardResult> showRewardedAd(String id) async {
+  FutureOr<RewardResult> showRewardedAd(String id) {
     if (!supported) {
       throw UnimplementedError();
     }
     late final completer = Completer<RewardResult>();
     RewardedAd.load(
-        adUnitId: rewardedId,
-        request: adRequest,
-        rewardedAdLoadCallback: RewardedAdLoadCallback(
-          onAdLoaded: (ad) {
-            ad.show(
-                onUserEarnedReward: (ad, item) =>
-                    completer.complete(RewardResult.earned));
-          },
-          onAdFailedToLoad: (adError) =>
-              completer.complete(RewardResult.noLoad),
-        ));
+      adUnitId: rewardedId,
+      request: adRequest,
+      rewardedAdLoadCallback: RewardedAdLoadCallback(
+        onAdLoaded: (ad) {
+          ad.show(
+              onUserEarnedReward: (ad, item) =>
+                  completer.complete(RewardResult.earned));
+        },
+        onAdFailedToLoad: (adError) => completer.complete(RewardResult.noLoad),
+      ),
+    );
 
-    return await completer.future;
+    return completer.future;
   }
 
   @override

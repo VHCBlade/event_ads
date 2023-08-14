@@ -49,7 +49,7 @@ class AdRepository extends Repository {
   @override
   List<BlocEventListener> generateListeners(BlocEventChannel channel) => [
         channel.addEventListener<void>(
-            AdEvent.showAd.event, (p0, p1) => adHandler.showAd()),
+            AdEvent.showAd.event, (p0, p1) => showAd()),
         channel.addEventListener<String>(
             AdEvent.showRewardedAd.event, (p0, p1) => showRewardedAd(p1)),
         channel.addEventListener<RewardedAdCallback>(
@@ -57,24 +57,35 @@ class AdRepository extends Repository {
             (p0, p1) => showRewardedAdWithCallback(p1)),
       ];
 
-  void showRewardedAd(String id) async {
-    final adResult = await adHandler.showRewardedAd(id);
-    _showRewardedAdResultStreamController.add(RewardResultWithId(id, adResult));
+  Future<void> showAd() async {
+    final loadingAd = adHandler.showAd();
+    channel.eventBus.fireEvent(AdEvent.loadingAd.event, null);
+
+    await loadingAd;
   }
 
-  void showRewardedAdWithCallback(RewardedAdCallback callback) {
+  Future<void> showRewardedAd(String id) async {
+    final adResult = adHandler.showRewardedAd(id);
+    channel.eventBus.fireEvent(AdEvent.loadingAd.event, null);
+    _showRewardedAdResultStreamController
+        .add(RewardResultWithId(id, await adResult));
+  }
+
+  Future<void> showRewardedAdWithCallback(RewardedAdCallback callback) {
     late final StreamSubscription subscription;
     final id = const Uuid().v4();
 
-    subscription = showRewardedAdResultStream.listen((event) {
-      if (event.id != id) {
-        return;
-      }
+    subscription = showRewardedAdResultStream.listen(
+      (event) {
+        if (event.id != id) {
+          return;
+        }
 
-      callback(event.result);
-      subscription.cancel();
-    });
+        callback(event.result);
+        subscription.cancel();
+      },
+    );
 
-    showRewardedAd(id);
+    return showRewardedAd(id);
   }
 }

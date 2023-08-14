@@ -1,6 +1,6 @@
 name: event_ads
 description: Holds an implementation for ad mob integration using the event_bloc package
-version: 0.1.0
+version: 0.2.0
 homepage: https://github.com/VHCBlade/event_ads
 
 environment:
@@ -11,11 +11,12 @@ dependencies:
   flutter:
     sdk: flutter
 
-  event_bloc: ^4.2.0
+  event_bloc: ^4.6.0
   event_db: ^0.1.0
   # event_db:
   #   path: ../event_db
-  google_mobile_ads: ^2.3.0
+  fluttertoast: ^8.2.2
+  google_mobile_ads: ^3.0.0
 
   uuid: ^3.0.7
 
